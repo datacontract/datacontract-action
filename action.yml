@@ -7,7 +7,7 @@ inputs:
     default: 'datacontract.yaml'
 runs:
   using: 'docker'
-  image: 'docker://datacontract/cli'
+  image: 'docker://datacontract/cli:snapshot-latest'
   args:
     - test
     - ${{ inputs.location }}
