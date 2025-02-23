@@ -9,6 +9,10 @@ inputs:
     description: The server configuration to run the schema and quality tests. Use the key of the server object in the data contract yaml file to refer to a server, e.g., `production`, or `all` for all servers (default).  
     required: false
     default: all
+  junit-test-report:
+    description: The location where the JUnit test report file should be written to. This test report can be used with a subsequent action to create a GitHub test summary.  
+    required: false
+    default: TEST-datacontract.xml
 runs:
   using: 'docker'
   image: 'docker://datacontract/cli:snapshot-latest'
@@ -19,5 +23,5 @@ runs:
     - '--output-format'
     - 'junit'
     - '--output'
-    - 'TEST-datacontract.xml'
+    - ${{ inputs.junit-test-report }}
     - ${{ inputs.location }}
