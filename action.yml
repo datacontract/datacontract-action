@@ -1,5 +1,5 @@
 name: Data Contract CLI
-description: 'Run Data Contract Tests. The result is written as a JUnit Test Report to 'TEST-datacontract.xml'.
+description: Run Data Contract Tests. The result is written as a JUnit Test Report to 'TEST-datacontract.xml'.
 inputs:
   location:  
     description: |
