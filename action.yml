@@ -1,13 +1,25 @@
 name: Data Contract CLI
-description: 'Run Data Contract Tests'
+description: 'Run Data Contract Tests. The result is written as a JUnit Test Report to 'TEST-datacontract.xml'.
 inputs:
   location:  
-    description: The location (url or path) of the data contract yaml. 
+    description: |
+      The location (url or path) of the data contract YAML.
+      The current workspace files are available at /github/workspace
     required: true
-    default: 'datacontract.yaml'
+    default: '/github/workspace/datacontract.yaml'
+  schema:
+    description: The server configuration to run the schema and quality tests. Use the key of the server object in the data contract yaml file to refer to a server, e.g., `production`, or `all` for all servers (default).  
+    required: false
+    default: all
 runs:
   using: 'docker'
   image: 'docker://datacontract/cli:snapshot-latest'
   args:
-    - test
+    - 'test'
+    - '--server'
+    - ${{ inputs.schema }}
+    - '--output-format'
+    - 'junit'
+    - '--output'
+    - '/github/workspace/TEST-datacontract.xml'
     - ${{ inputs.location }}
