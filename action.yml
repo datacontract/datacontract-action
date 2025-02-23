@@ -1,0 +1,16 @@
+name: Data Contract CLI
+description: 'Run Data Contract Tests'
+inputs:
+  location:  
+    description: The location (url or path) of the data contract yaml. 
+    required: true
+    default: 'datacontract.yaml'
+outputs:
+  result: # id of output
+    description: 'The time we greeted you'
+runs:
+  using: 'docker'
+  image: 'docker://datacontract/cli'
+  args:
+    - test
+    - ${{ inputs.location }}
