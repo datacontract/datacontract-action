@@ -7,7 +7,7 @@ inputs:
       The current workspace files are available at /github/workspace
     required: true
     default: '/github/workspace/datacontract.yaml'
-  schema:
+  server:
     description: The server configuration to run the schema and quality tests. Use the key of the server object in the data contract yaml file to refer to a server, e.g., `production`, or `all` for all servers (default).  
     required: false
     default: all
@@ -17,7 +17,7 @@ runs:
   args:
     - 'test'
     - '--server'
-    - ${{ inputs.schema }}
+    - ${{ inputs.server }}
     - '--output-format'
     - 'junit'
     - '--output'
