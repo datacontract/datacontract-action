@@ -1,13 +1,13 @@
 # datacontract-action
 
-GitHub Action to run data contract tests using the [Data Contract CLI](https://github.com/datacontract/datacontract-cli) Docker image.
+GitHub Action to run data contract tests using the [Data Contract CLI](https://github.com/datacontract/datacontract-cli).
 
 The action supports testing data contracts in [Data Contract Specification](https://datacontract.com/) and [Open Data Contract Standard
 ](https://bitol-io.github.io/open-data-contract-standard/latest/) format.
 
+![datacontract-action in combination with test reporter action](https://github.com/user-attachments/assets/50e7614b-aedd-4e90-9249-6fbfba718dfd)
 
-
-TODO Add Screenshot
+You can use this GitHub action to enforce data contracts whenever your data contract specification changes and for periodic checks. The action generates a test report in JUnit XML format that can be used in a subsequent step to create a GitHub test summary, as shown above.
 
 
 ## Usage
@@ -20,7 +20,7 @@ Add this step to your Github action workflow:
         with:
           location: datacontract.yaml                 # local data contract file in workspace or remote URL
           server: all                                 # The name of server to test or all
-          junit-test-report: TEST-datacontract.xml    # This test report can be used with a subsequent action to create a Github test summary.
+          junit-test-report: TEST-datacontract.xml    # This test report can be used with a subsequent action to create a GitHub test summary.
         env: # Define server credentials as environment variables. Use Github Secrets for secure configuration.
           DATACONTRACT_SNOWFLAKE_USERNAME: ${{ secrets.DATACONTRACT_SNOWFLAKE_USERNAME }}
           DATACONTRACT_SNOWFLAKE_PASSWORD: ${{ secrets.DATACONTRACT_SNOWFLAKE_PASSWORD }}
@@ -30,7 +30,7 @@ Add this step to your Github action workflow:
 
 
 
-## Example
+## Full Example
 
 This action can be used in combination with a [test reporter action](https://github.com/dorny/test-reporter) to create and publish a test summary.
 
