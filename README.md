@@ -31,7 +31,7 @@ This action can be used in combination with a [test reporter action](https://git
 
 
 ```yaml
-# .github/workflows/datacontract.yml
+# .github/workflows/main.yml
 on:
   push:
   workflow_dispatch:
