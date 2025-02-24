@@ -18,7 +18,10 @@ runs:
   image: 'docker://datacontract/cli:snapshot-latest'
   args:
     - 'test'
-    - --server ${{ inputs.server }}
-    - --output-format junit
-    - --output ${{ inputs.junit-test-report }}
+    - --server
+    - ${{ inputs.server }}
+    - --output-format
+    - junit
+    - --output
+    - ${{ inputs.junit-test-report }}
     - ${{ inputs.location }}
