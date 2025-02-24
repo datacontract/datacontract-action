@@ -13,9 +13,6 @@ inputs:
     description: The location where the JUnit test report file should be written to. This test report can be used with a subsequent action to create a GitHub test summary.  
     required: false
     default: TEST-datacontract.xml
-  publish:
-    description: The url to publish the results after the test
-    required: false
 runs:
   using: 'docker'
   image: 'docker://datacontract/cli:snapshot-latest'
@@ -27,5 +24,4 @@ runs:
     - junit
     - --output
     - ${{ inputs.junit-test-report }}
-    - ${{ inputs.publish && format('--publish {0}', inputs.publish) || '' }}
     - ${{ inputs.location }}
