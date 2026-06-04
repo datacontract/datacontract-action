@@ -15,7 +15,7 @@ inputs:
     default: TEST-datacontract.xml
 runs:
   using: 'docker'
-  image: 'docker://datacontract/cli:snapshot-latest'
+  image: 'docker://datacontract/cli:latest'
   args:
     - 'test'
     - --server
