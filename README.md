@@ -21,6 +21,7 @@ Add this step to your Github action workflow:
           location: datacontract.yaml                 # local data contract file in workspace or remote URL
           server: all                                 # The name of server to test or all
           junit-test-report: TEST-datacontract.xml    # This test report can be used with a subsequent action to create a GitHub test summary.
+          publish: ''                                 # Optional URL to publish test results to (e.g. a Data Mesh Manager / Entropy Data endpoint). Leave empty to skip.
         env: # Define server credentials as environment variables. Use Github Secrets for secure configuration.
           DATACONTRACT_SNOWFLAKE_USERNAME: ${{ secrets.DATACONTRACT_SNOWFLAKE_USERNAME }}
           DATACONTRACT_SNOWFLAKE_PASSWORD: ${{ secrets.DATACONTRACT_SNOWFLAKE_PASSWORD }}
@@ -73,6 +74,27 @@ jobs:
           path: ./TEST-datacontract.xml
           reporter: java-junit
           fail-on-error: 'false'
+```
+
+
+## Publishing test results
+
+Set the `publish` input to a URL to push the test results after each run, for example to a
+[Data Mesh Manager](https://datamesh-manager.com/) or Entropy Data test-results endpoint. When the
+input is empty (the default), nothing is published and the action behaves exactly as before.
+
+```yaml
+      - name: Data Contract Tests
+        uses: datacontract/datacontract-action@main
+        with:
+          location: datacontract.yaml
+          server: production
+          publish: https://api.entropy-data.com/api/test-results
+        env:
+          DATACONTRACT_DATABRICKS_TOKEN: ${{ secrets.DATACONTRACT_DATABRICKS_TOKEN }}
+          DATACONTRACT_DATABRICKS_SERVER_HOSTNAME: ${{ secrets.DATACONTRACT_DATABRICKS_SERVER_HOSTNAME }}
+          DATACONTRACT_DATABRICKS_HTTP_PATH: ${{ secrets.DATACONTRACT_DATABRICKS_HTTP_PATH }}
+          ENTROPY_DATA_API_KEY: ${{ secrets.ENTROPY_DATA_API_KEY }}   # auth for the publish endpoint
 ```
 
 

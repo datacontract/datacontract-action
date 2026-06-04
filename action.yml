@@ -1,27 +1,32 @@
 name: Data Contract CLI
-description: Run Data Contract Tests. The result is written as a JUnit Test Report to 'TEST-datacontract.xml'.
+description: Run Data Contract Tests. The result is written as a JUnit Test Report to 'TEST-datacontract.xml' and can optionally be published.
 inputs:
-  location:  
+  location:
     description: The location (url or path) of the data contract YAML. The current Github workspace is set as working dir and mounted to '/github/workspace'.
     required: true
     default: 'datacontract.yaml'
   server:
-    description: The server configuration to run the schema and quality tests. Use the key of the server object in the data contract yaml file to refer to a server, e.g., `production`, or `all` for all servers (default).  
+    description: The server configuration to run the schema and quality tests. Use the key of the server object in the data contract yaml file to refer to a server, e.g., `production`, or `all` for all servers (default).
     required: false
     default: all
   junit-test-report:
-    description: The location where the JUnit test report file should be written to. This test report can be used with a subsequent action to create a GitHub test summary.  
+    description: The location where the JUnit test report file should be written to. This test report can be used with a subsequent action to create a GitHub test summary.
     required: false
     default: TEST-datacontract.xml
+  publish:
+    description: Optional URL to publish the test results to (passed to the CLI as `--publish`). Leave empty (default) to skip publishing. Authentication is read from environment variables, e.g. `ENTROPY_DATA_API_KEY`.
+    required: false
+    default: ''
 runs:
   using: 'docker'
   image: 'docker://datacontract/cli:latest'
+  entrypoint: /bin/sh
   args:
-    - 'test'
-    - --server
-    - ${{ inputs.server }}
-    - --output-format
-    - junit
-    - --output
-    - ${{ inputs.junit-test-report }}
-    - ${{ inputs.location }}
+    - -c
+    - >-
+      datacontract test
+      --server '${{ inputs.server }}'
+      --output-format junit
+      --output '${{ inputs.junit-test-report }}'
+      ${{ inputs.publish != '' && format('--publish ''{0}''', inputs.publish) || '' }}
+      '${{ inputs.location }}'
