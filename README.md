@@ -31,6 +31,29 @@ Add this step to your Github action workflow:
 
 
 
+## Writable workspace (non-root container)
+
+This action runs the `datacontract/cli` Docker image, which executes as a **non-root user**. The JUnit
+test report (`junit-test-report`, default `TEST-datacontract.xml`) is written into the GitHub workspace
+(mounted at `/github/workspace`), which is owned by the runner user. If the workspace is not writable by
+the container user, the tests run and publish successfully but the action fails at the end when writing
+the report:
+
+```
+Error: [Errno 13] Permission denied: 'TEST-datacontract.xml'
+```
+
+Add a step before this action to make the workspace writable:
+
+```yaml
+      - name: Make workspace writable for the datacontract container
+        run: chmod -R a+rwX "$GITHUB_WORKSPACE"
+```
+
+`a+rwX` grants write access to all users; the capital `X` sets the traverse bit on directories only, so
+the container user can create the report file inside the workspace.
+
+
 ## Full Example
 
 This action can be used in combination with a [test reporter action](https://github.com/dorny/test-reporter) to create and publish a test summary.
@@ -53,6 +76,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Make workspace writable for the datacontract container
+        run: chmod -R a+rwX "$GITHUB_WORKSPACE"
 
       - name: Data Contract Tests
         uses: datacontract/datacontract-action@main
