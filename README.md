@@ -75,7 +75,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Make workspace writable for the datacontract container
         run: chmod -R a+rwX "$GITHUB_WORKSPACE"
@@ -93,7 +93,7 @@ jobs:
           DATACONTRACT_SNOWFLAKE_ROLE: ${{ secrets.DATACONTRACT_SNOWFLAKE_ROLE }}
 
       - name: Data Contract Test Results
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@v3
         if: always()
         with:
           name: Data Contract Test Results
