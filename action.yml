@@ -20,13 +20,18 @@ inputs:
 runs:
   using: 'docker'
   image: 'docker://datacontract/cli:latest'
-  entrypoint: /bin/sh
+  # The image has no shell, so the CLI is invoked directly. The runner passes empty
+  # args as literal "" (it does not drop them) and the CLI rejects an empty --publish
+  # value, so the publish option is a single `--publish=<url>` arg that degrades to
+  # `--no-logs` (the CLI's default behavior anyway) when the input is unset.
+  entrypoint: datacontract
   args:
-    - -c
-    - >-
-      datacontract test
-      --server '${{ inputs.server }}'
-      --output-format junit
-      --output '${{ inputs.junit-test-report }}'
-      ${{ inputs.publish != '' && format('--publish ''{0}''', inputs.publish) || '' }}
-      '${{ inputs.location }}'
+    - test
+    - --server
+    - ${{ inputs.server }}
+    - --output-format
+    - junit
+    - --output
+    - ${{ inputs.junit-test-report }}
+    - ${{ inputs.publish != '' && format('--publish={0}', inputs.publish) || '--no-logs' }}
+    - ${{ inputs.location }}
