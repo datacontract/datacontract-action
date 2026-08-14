@@ -1,0 +1,26 @@
+name: Test
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # The datacontract container runs as a non-root user and writes the JUnit
+      # report into the workspace, see README.
+      - name: Make workspace writable for datacontract container
+        run: chmod -R a+rwX "$GITHUB_WORKSPACE"
+      - name: Run action against local test contract
+        uses: ./
+        with:
+          location: tests/datacontract.yaml
+          server: production
+          junit-test-report: TEST-datacontract.xml
+      - name: Assert JUnit report was written
+        run: |
+          test -s TEST-datacontract.xml
+          grep -q 'failures="0"' TEST-datacontract.xml
+          cat TEST-datacontract.xml

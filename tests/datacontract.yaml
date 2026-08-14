@@ -1,0 +1,20 @@
+dataContractSpecification: 1.1.0
+id: datacontract-action-smoke-test
+info:
+  title: Smoke test contract for the GitHub Action
+  version: 1.0.0
+servers:
+  production:
+    type: local
+    path: tests/data/orders.csv
+    format: csv
+models:
+  orders:
+    type: table
+    fields:
+      order_id:
+        type: string
+        required: true
+        unique: true
+      amount:
+        type: decimal
