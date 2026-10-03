@@ -6,7 +6,7 @@ on:
 
 jobs:
   smoke-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       # The datacontract container runs as a non-root user and writes the JUnit
